@@ -13,6 +13,7 @@
   "keywords": [],
   "dependencies": {
     "fabric-contract-api": "^2.5.4",
+    "fabric-shim": "^2.2.0",
     "json-stringify-deterministic": "^1.0.8",
     "sort-keys-recursive": "^2.1.8"
   }
