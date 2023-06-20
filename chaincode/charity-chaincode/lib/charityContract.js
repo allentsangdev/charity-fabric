@@ -44,7 +44,7 @@ class CharityContract extends Contract {
             DonateHistory : donateHistory
         };
 
-        const compositeKey = ctx.stub.createCompositeKey(campaignObjectType, [campaign.id]);
+        const compositeKey = ctx.stub.createCompositeKey(campaignObjectType, [campaign.ID]);
         // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
         await ctx.stub.putState(compositeKey, Buffer.from(stringify(sortKeysRecursive(campaign))));
         return JSON.stringify(campaign);
@@ -105,14 +105,14 @@ class CharityContract extends Contract {
 
             // Donate funds: update the DonatorAccount and CampaignObject locally
             donatorAccount.balance -= donateAmt
-            targetCampaign.balance +- donateAmt
+            targetCampaign.balance += donateAmt
             // Donate funds: update the DonatorAccount and CampaignObject in the world state
             await this._putAccount(ctx, donatorAccount) 
             await this._updateCampaign(ctx, targetCampaign) 
 
         }   
         catch(error){
-            console.log(error.message)
+            return console.log(error.message)
         } 
 
     }
@@ -120,7 +120,7 @@ class CharityContract extends Contract {
      // GetAllCampaign returns all campaign found in the world state.
      async GetAllCampaign(ctx) {
         
-        const iteratorPromise = ctx.stub.getStateByPartialCompositeKey(campaignObjectTypeObjType, []);
+        const iteratorPromise = ctx.stub.getStateByPartialCompositeKey(campaignObjectType, []);
 
         let results = [];
         for await (const res of iteratorPromise) {
