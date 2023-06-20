@@ -66,8 +66,8 @@ class CharityContract extends Contract {
             balance: accountBalance
         }
 
-        if (await this._accountExists(ctx, account.id)) {
-            throw new Error(`the account ${account.id} already exists`);
+        if (await this._accountExists(ctx, donatorAccount.id)) {
+            throw new Error(`the account ${donatorAccount.id} already exists`);
         }
 
         await this._putAccount(ctx, donatorAccount);
