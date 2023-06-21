@@ -114,7 +114,7 @@ class CharityContract extends Contract {
 
         }   
         catch(error){
-            return console.log(error.message)
+            return error.message
         } 
 
     }
