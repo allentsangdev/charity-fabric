@@ -81,7 +81,8 @@ class CharityContract extends Contract {
         if (!assetJSON || assetJSON.length === 0) {
             throw new Error(`The campaign ${campaignId} does not exist`);
         }
-        return assetJSON.toString();
+        return JSON.parse(assetJSON.toString());
+        
     }
     
     // Donate deposits fund into a campaign with given campaign ID.
@@ -111,7 +112,7 @@ class CharityContract extends Contract {
             // Donate funds: update the DonatorAccount and CampaignObject in the world state
             await this._putAccount(ctx, donatorAccount) 
             await this._updateCampaign(ctx, targetCampaign) 
-
+            
         }   
         catch(error){
             return error.message
