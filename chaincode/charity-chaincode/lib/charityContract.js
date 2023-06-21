@@ -25,7 +25,7 @@ class CharityContract extends Contract {
 
     // ------------------------ Campaign Organizer functions  ------------------------ //
     // CreateCampaign issues a new asset to the world state with given details.
-    async createCampaign(ctx, campaignId, campaignName, campaignDesc, fundReceiver, expireOn, targetAmt,currentRaisedAmt = 0, donateHistory = {} ) {
+    async CreateCampaign(ctx, campaignId, campaignName, campaignDesc, fundReceiver, expireOn, targetAmt,currentRaisedAmt = 0, donateHistory = {} ) {
         
         // Validate if a Campaign exist on the world state or not
         const exists = await this._campaignExists(ctx, campaignId);
