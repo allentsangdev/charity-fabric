@@ -25,7 +25,7 @@ class CharityContract extends Contract {
 
     // ------------------------ Campaign Organizer functions  ------------------------ //
     // CreateCampaign issues a new asset to the world state with given details.
-    async CreateCampaign(ctx, campaignId, campaignName, campaignDesc, fundReceiver, expireOn, targetAmt,currentRaisedAmt, donateHistory ) {
+    async createCampaign(ctx, campaignId, campaignName, campaignDesc, fundReceiver, expireOn, targetAmt,currentRaisedAmt = 0, donateHistory = {} ) {
         
         // Validate if a Campaign exist on the world state or not
         const exists = await this._campaignExists(ctx, campaignId);
@@ -47,6 +47,7 @@ class CharityContract extends Contract {
         const compositeKey = ctx.stub.createCompositeKey(campaignObjectType, [campaign.ID]);
         // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
         await ctx.stub.putState(compositeKey, Buffer.from(stringify(sortKeysRecursive(campaign))));
+        console.log(`Campaign ${campaignId} : ${campaignName} created successfully!`)
         return JSON.stringify(campaign);
     }
     
