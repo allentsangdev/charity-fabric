@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+const submitTransaction = require('./path/to/gatewayApp.js');
  
 export async function GET() {
   const res = {}
