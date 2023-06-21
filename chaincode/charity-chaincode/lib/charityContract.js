@@ -103,7 +103,7 @@ class CharityContract extends Contract {
             }
 
             // Get the campaign that the donator wants to donate to
-            const targetCampaign = await this.GetCampaign(campaignId)
+            const targetCampaign = await this.GetCampaign(ctx, campaignId)
 
             // Donate funds: update the DonatorAccount and CampaignObject locally
             donatorAccount.balance -= donateAmt
