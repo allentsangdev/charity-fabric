@@ -18,19 +18,7 @@ export PATH=${PWD}/../bin:$PATH \
 export FABRIC_CFG_PATH=$PWD/../config/
 
 
-peer chaincode invoke \
-    -o localhost:7050 \
-    --ordererTLSHostnameOverride orderer.example.com \
-    --tls --cafile ${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem \
-    -C mychannel \
-    -n charity_chaincode \
-    --peerAddresses localhost:7051 \
-    --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt \
-    --peerAddresses localhost:9051 \
-    --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt \
--c '{"function": "CreateCampaign", "Args": ["1","Arash"]}'
-
-
+// To Test that the chaincode functions are executable.
 peer chaincode invoke \
     -o localhost:7050 \
     --ordererTLSHostnameOverride orderer.example.com \
@@ -44,14 +32,5 @@ peer chaincode invoke \
 -c '{"function": "CreateCampaign", "Args": ["1", "Bright", "children", "a1", "2023-10-01", "1000000", "0", "b1"]}'
 
 
-peer chaincode invoke \
-    -o localhost:7050 \
-    --ordererTLSHostnameOverride orderer.example.com \
-    --tls --cafile ${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem \
-    -C mychannel \
-    -n balance_transfer \
-    --peerAddresses localhost:7051 \
-    --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt \
-    --peerAddresses localhost:9051 \
-    --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt \
--c '{"function": "GetAllCampaign", "Args": []}'
+// Using the gateWay 
+node submitTransaction.js 'User1@org1.example.com' CreateCampaign "2", "Bright 2.0", "Helping children of war", "a1", "2023-10-01", "1000000", "0", "b1"
