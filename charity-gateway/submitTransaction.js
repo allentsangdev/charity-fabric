@@ -6,18 +6,13 @@ const { Wallets, Gateway } = require('fabric-network');
 
 const testNetworkRoot = path.resolve(require('os').homedir(), 'fabric-samples/test-network');
 
-async function main() {
+async function main(identityLabel, functionName, chaincodeArgs ) {
     const gateway = new Gateway();
     // ==== Do we neeed wallet ? if so 
     const wallet = await Wallets.newFileSystemWallet('./wallet');
 
     try {
-        let args = process.argv.slice(2);
-
-        const identityLabel = args[0];
-        const functionName = args[1];
-        const chaincodeArgs = args.slice(2);
-
+        
         const orgName = identityLabel.split('@')[1];
         const orgNameWithoutDomain = orgName.split('.')[0];
 

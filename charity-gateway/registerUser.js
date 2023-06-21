@@ -8,15 +8,10 @@ const { Wallets, Gateway } = require('fabric-network');
 
 const testNetworkRoot = path.resolve(require('os').homedir(), 'fabric-samples/test-network');
 
-async function main() {
+async function main(registrarLabel,) {
     try {
         // Create a new FileSystemWallet object for managing identities.
         const wallet = await Wallets.newFileSystemWallet('./wallet');
-
-        // Process input parameters.
-        let args = process.argv.slice(2);
-
-        const registrarLabel = args[0];
 
         // Check to see if we've already enrolled the registrar user.
         let registrarIdentity = await wallet.get(registrarLabel);
@@ -45,11 +40,12 @@ async function main() {
 
         const enrollmentID = args[1];
 
-        // optional parameters
+        /* optional parameters
         let optional = {};
         if (args.length > 2) {
             optional = JSON.parse(args[2]);
         }
+        */
 
         // Register the user and return the enrollment secret.
         let registerRequest = {
@@ -66,6 +62,7 @@ async function main() {
     }
 }
 
+/*
 main().then(() => {
     console.log('User registration completed successfully.');
 }).catch((e) => {
@@ -74,3 +71,6 @@ main().then(() => {
     console.log(e.stack);
     process.exit(-1);
 });
+*/
+
+module.exports = { main }

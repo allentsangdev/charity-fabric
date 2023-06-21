@@ -8,11 +8,9 @@ const { Wallets } = require('fabric-network');
 
 const testNetworkRoot = path.resolve(require('os').homedir(), 'fabric-samples/test-network');
 
-async function main() {
+async function main(identityLabel, enrollmentID, enrollmentSecret ) {
     try {
-        let args = process.argv.slice(2);
-
-        const identityLabel = args[0];
+        
         const orgName = identityLabel.split('@')[1];
         const orgNameWithoutDomain = orgName.split('.')[0];
 
@@ -36,10 +34,6 @@ async function main() {
             console.log(`An identity for the ${identityLabel} user already exists in the wallet`);
             return;
         }
-
-        // Enroll the user, and import the new identity into the wallet.
-        const enrollmentID = args[1];
-        const enrollmentSecret = args[2];
 
         // optional
         let enrollmentAttributes = [];
@@ -73,6 +67,7 @@ async function main() {
     }
 }
 
+/*
 main().then(() => {
     console.log('User enrollment completed successfully.');
 }).catch((e) => {
@@ -81,3 +76,6 @@ main().then(() => {
     console.log(e.stack);
     process.exit(-1);
 });
+*/
+
+module.exports = { main }
