@@ -55,7 +55,7 @@ class CharityContract extends Contract {
     // Create an account for Donator
     // For demo purpose, every donator will have 100000 USD as default balance
     // Logics for funding a specifc account to be developed at later stage 
-    async createDonatorAccount(ctx, id, balance = 10000) {
+    async CreateDonatorAccount(ctx, id, balance = 10000) {
         const accountBalance = parseFloat(balance);
         if (accountBalance < 0) {
             throw new Error(`account balance cannot be negative`);
