@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
 
-export function AlertModal({ children }: any) {
+export function AlertModal({ children, isDonator, setAmount }: any) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
@@ -26,8 +26,10 @@ export function AlertModal({ children }: any) {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <Link href="/list">
-            <AlertDialogAction>Continue</AlertDialogAction>
+          <Link href={isDonator ? "/list" : ""}>
+            <AlertDialogAction onClick={() => setAmount(null)}>
+              Continue
+            </AlertDialogAction>
           </Link>
         </AlertDialogFooter>
       </AlertDialogContent>
