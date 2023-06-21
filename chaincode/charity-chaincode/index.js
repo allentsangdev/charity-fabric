@@ -6,7 +6,7 @@
 
 'use strict';
 
-const charityContract = require('./lib/vehicleTransfer');
+const charityContract = require('./lib/charityContract');
 
 module.exports.CharityContract = charityContract;
 module.exports.contracts = [charityContract];
