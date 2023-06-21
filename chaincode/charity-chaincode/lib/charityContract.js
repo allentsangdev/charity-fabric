@@ -76,7 +76,8 @@ class CharityContract extends Contract {
     
     // GetCampaign returns the Campaign stored in the world state with given ID.
     async GetCampaign(ctx, campaignId) {
-        const assetJSON = await ctx.stub.getState(campaignId); // get the campaign from chaincode state
+        const compositeKey = ctx.stub.createCompositeKey(campaignObjectType, [campaignId]);
+        const assetJSON = await ctx.stub.getState(compositeKey); // get the campaign from chaincode state
         if (!assetJSON || assetJSON.length === 0) {
             throw new Error(`The campaign ${campaignId} does not exist`);
         }
