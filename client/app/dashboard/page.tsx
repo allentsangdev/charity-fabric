@@ -19,6 +19,10 @@ import { Separator } from "@/components/ui/separator"
 import { AlertModal } from "@/components/donator/Modal"
 
 const page = () => {
+  const [amount, setAmount] = React.useState<number>()
+
+  console.log(amount)
+
   return (
     <div className="w-full flex justify-center items-center">
       <Card className="">
@@ -46,20 +50,24 @@ const page = () => {
                 <Label htmlFor="name">Amount</Label>
                 <NumericFormat
                   customInput={Input}
+                  value={amount}
                   thousandSeparator
                   allowNegative={false}
                   prefix="$"
+                  onChange={(e: {
+                    target: { value: React.SetStateAction<number | undefined> }
+                  }) => setAmount(e.target.value)}
                 />
               </div>
             </div>
           </form>
         </CardContent>
         <CardFooter className="flex justify-between">
-          <Link href="/list">
-            <Button variant="ghost">Back</Button>
+          <Link href="/">
+            <Button variant="ghost">Log out</Button>
           </Link>
-          <AlertModal>
-            <Button>Donate</Button>
+          <AlertModal isDonator={false} {...{ setAmount }}>
+            <Button>Withdraw</Button>
           </AlertModal>
         </CardFooter>
       </Card>

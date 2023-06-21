@@ -4,12 +4,7 @@ export const siteConfig = {
   name: "Charity Inc",
   description:
     "Beautifully designed components built with Radix UI and Tailwind CSS.",
-  mainNav: [
-    {
-      title: "Register | Login",
-      href: "/auth/register",
-    },
-  ],
+  mainNav: [],
   links: {
     twitter: "https://twitter.com/shadcn",
     github: "https://github.com/shadcn/ui",
