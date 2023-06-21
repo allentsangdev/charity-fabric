@@ -137,8 +137,9 @@ class CharityContract extends Contract {
 
     // ------------------------ Internal functions  ------------------------ //
     // _campaignExists returns true when asset with given ID exists in world state.
-    async _campaignExists(ctx, id) {
-        const assetJSON = await ctx.stub.getState(id);
+    async _campaignExists(ctx, campaignId) {
+        const compositeKey = ctx.stub.createCompositeKey(campaignObjectType, [campaignId]);
+        const assetJSON = await ctx.stub.getState(compositeKey);
         return assetJSON && assetJSON.length > 0;
     }
 
@@ -180,13 +181,14 @@ class CharityContract extends Contract {
     async _updateCampaign(ctx, updatedCampaign) {
 
         // Validate if a Campaign exist on the world state or not
-        const exists = await this._campaignExists(ctx, campaignId);
+        const exists = await this._campaignExists(ctx, updatedCampaign.ID);
         if (!exists) {
-            throw new Error(`The campaign ${campaignId} does not exists`);
+            throw new Error(`The campaign ${updatedCampaign.ID} does not exists`);
         }
 
+        const compositeKey = ctx.stub.createCompositeKey(campaignObjectType, [updatedCampaign.ID]);
         // we insert data in alphabetic order using 'json-stringify-deterministic' and 'sort-keys-recursive'
-        return ctx.stub.putState(updatedCampaign.id, Buffer.from(stringify(sortKeysRecursive(updatedCampaign))));
+        return ctx.stub.putState(compositeKey, Buffer.from(stringify(sortKeysRecursive(updatedCampaign))));
     }
 
 /*
