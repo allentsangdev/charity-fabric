@@ -45,7 +45,7 @@ async function main(identityLabel, enrollmentID, enrollmentSecret ) {
         let enrollmentRequest = {
             enrollmentID: enrollmentID,
             enrollmentSecret: enrollmentSecret,
-            attr_reqs: enrollmentAttributes
+            //attr_reqs: enrollmentAttributes
         };
         const enrollment = await ca.enroll(enrollmentRequest);
 
@@ -60,7 +60,7 @@ async function main(identityLabel, enrollmentID, enrollmentSecret ) {
         };
 
         const res = await wallet.put(identityLabel, identity);
-        //const res = `Successfully enrolled ${identityLabel} user and imported it into the wallet`;
+        console.log( `Successfully enrolled ${identityLabel} user and imported it into the wallet`);
         return res
 
     } catch (error) {
