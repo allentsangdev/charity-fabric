@@ -1,9 +1,8 @@
-const { main } = require('/home/azureuser/fabric-samples/charity-fabric/charity-gateway/enrollUser.js')
-const { registerUser } = require('/home/azureuser/fabric-samples/charity-fabric/charity-gateway/registerUser.js')
-const { submitTransaction } = require('/home/azureuser/fabric-samples/charity-fabric/charity-gateway/submitTransaction.js')
+const { main } = require('../charity-gateway/enrollUser')
+const { registerUser } = require('../charity-gateway/registerUser')
+const { submitTransaction } = require('../charity-gateway/submitTransaction')
 const express = require('express')
 const cors = require('cors')
-const { submitTransaction } = require('../charity-gateway/submitTransaction')
 const app = express()
 const router = express.Router()
 const PORT = process.env.port || 4000
@@ -46,7 +45,7 @@ router.post('/register-user', async (req,res) => {
 
 // ------------------------ Endpoints that talk to chaincode  ------------------------ //
 // POST Request: Create Campaign
-router.psot('/create-campaign', async (req,res) => {
+router.post('/create-campaign', async (req,res) => {
     try {
         const {identityLabel, chaincodeArgs } = req.body
         const result = await submitTransaction(identityLabel, functionName = 'CreateCampaign', chaincodeArgs)
@@ -72,7 +71,7 @@ router.post('/create-donator-account', async (req,res) => {
 })
 
 // GET Request: Get All Campaign
-router.get('/get-all-campaign', async (req,res) => {
+router.post('/get-all-campaign', async (req,res) => {
     try {
         const {identityLabel, chaincodeArgs } = req.body
         const result = await submitTransaction(identityLabel, functionName = 'GetAllCampaign', chaincodeArgs)

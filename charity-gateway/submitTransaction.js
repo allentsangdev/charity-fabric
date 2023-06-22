@@ -9,7 +9,7 @@ const testNetworkRoot = path.resolve(require('os').homedir(), 'fabric-samples/te
 async function submitTransaction(identityLabel, functionName, chaincodeArgs) {
     const gateway = new Gateway();
     // ==== Do we neeed wallet ? if so 
-    const wallet = await Wallets.newFileSystemWallet('./wallet');
+    const wallet = await Wallets.newFileSystemWallet('/home/azureuser/fabric-samples/charity-fabric/server/wallet');
 
     try {
         
@@ -37,7 +37,7 @@ async function submitTransaction(identityLabel, functionName, chaincodeArgs) {
         const network = await gateway.getNetwork('mychannel');
 
         console.log('Use CharityContract.');
-        const contract = network.getContract('charity_chaincode');
+        const contract = network.getContract('charity-contract');
 
         console.log('Submit ' + functionName + ' transaction.');
         const response = await contract.submitTransaction(functionName, ...chaincodeArgs);
