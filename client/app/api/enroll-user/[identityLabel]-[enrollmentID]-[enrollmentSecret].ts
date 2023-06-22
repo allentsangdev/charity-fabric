@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { main } from '../../../..//charity-gateway/enrollUser.js'
+import { main } from '../../../../charity-gateway/enrollUser.js'
 
 export async function GET(request: Request) {
   
@@ -22,4 +22,5 @@ export async function GET(request: Request) {
   }
 
   // return NextResponse.json("Hi 2")
+  // test
 }
