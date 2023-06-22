@@ -35,7 +35,7 @@ router.post('/register-user', async (req,res) => {
     try {
         const {identityLabel, enrollmentID, optional } = req.body
         const result = await registerUser(identityLabel, enrollmentID, optional)
-        res.status(200).json(result)
+        res.status(200).send(result)
     } 
     catch(error) {
         res.status(500).send(error.message)

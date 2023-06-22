@@ -36,24 +36,25 @@ async function registerUser(registrarLabel, enrollmentID, optional) {
         const provider = wallet.getProviderRegistry().getProvider(registrarIdentity.type);
 		const registrarUser = await provider.getUserContext(registrarIdentity, registrarLabel);
 
-        // optional parameters
+        /* optional parameters
         let optionalSecret = {};
         if (optional) {
             optionalSecret = JSON.parse(optional);
         }
+        */
         
         // Register the user and return the enrollment secret.
         let registerRequest = {
             enrollmentID: enrollmentID,
-            enrollmentSecret: optionalSecret.secret || "",
+            enrollmentSecret: optional.secret || "",
             role: 'client',
-            attrs: optionalSecret.attrs || []
+            attrs: optional.attrs || []
         };
         const secret = await ca.register(registerRequest, registrarUser);
         console.log(`Successfully registered the user with the ${enrollmentID} enrollment ID and ${secret} enrollment secret.`);
         return secret
     } catch (error) {
-        return error.message
+        return error
     }
 }
 
