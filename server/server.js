@@ -1,7 +1,9 @@
 const { main } = require('/home/azureuser/fabric-samples/charity-fabric/charity-gateway/enrollUser.js')
 const { registerUser } = require('/home/azureuser/fabric-samples/charity-fabric/charity-gateway/registerUser.js')
+const { submitTransaction } = require('/home/azureuser/fabric-samples/charity-fabric/charity-gateway/submitTransaction.js')
 const express = require('express')
 const cors = require('cors')
+const { submitTransaction } = require('../charity-gateway/submitTransaction')
 const app = express()
 const router = express.Router()
 const PORT = process.env.port || 4000
@@ -42,25 +44,58 @@ router.post('/register-user', async (req,res) => {
     }
 })
 
-/*
-// POST Request: Donate
-router.get('/donate', async (req,res) => {
+// ------------------------ Endpoints that talk to chaincode  ------------------------ //
+// POST Request: Create Campaign
+router.psot('/create-campaign', async (req,res) => {
     try {
-        const {seedPhrase, destinationAddress, txAmount } = req.body
-        const tx = {
-            to:destinationAddress,
-            value: utils.parseEther(txAmount)
-        }
-        const wallet = await importWallet(seedPhrase)
-        const txReceipt = await wallet.sendTransaction(tx)
-        res.status(200).json(txReceipt)
+        const {identityLabel, chaincodeArgs } = req.body
+        const result = await submitTransaction(identityLabel, functionName = 'CreateCampaign', chaincodeArgs)
+        res.status(200).json(result)
 
     } 
     catch(error) {
         res.status(500).send(error.message)
     }
 })
-*/
+
+// POST Request: Create Donator Account
+router.post('/create-donator-account', async (req,res) => {
+    try {
+        const {identityLabel, chaincodeArgs } = req.body
+        const result = await submitTransaction(identityLabel, functionName = 'CreateDonatorAccount', chaincodeArgs)
+        res.status(200).json(result)
+
+    } 
+    catch(error) {
+        res.status(500).send(error.message)
+    }
+})
+
+// GET Request: Get All Campaign
+router.get('/get-all-campaign', async (req,res) => {
+    try {
+        const {identityLabel, chaincodeArgs } = req.body
+        const result = await submitTransaction(identityLabel, functionName = 'GetAllCampaign', chaincodeArgs)
+        res.status(200).json(result)
+
+    } 
+    catch(error) {
+        res.status(500).send(error.message)
+    }
+})
+
+// POST Request: Donate
+router.post('/donate', async (req,res) => {
+    try {
+        const {identityLabel, chaincodeArgs } = req.body
+        const result = await submitTransaction(identityLabel, functionName = 'Donate', chaincodeArgs)
+        res.status(200).json(result)
+
+    } 
+    catch(error) {
+        res.status(500).send(error.message)
+    }
+})
 
 app.use('/', router)
 

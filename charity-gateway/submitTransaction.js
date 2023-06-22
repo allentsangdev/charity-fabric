@@ -6,7 +6,7 @@ const { Wallets, Gateway } = require('fabric-network');
 
 const testNetworkRoot = path.resolve(require('os').homedir(), 'fabric-samples/test-network');
 
-async function main(identityLabel, functionName, chaincodeArgs ) {
+async function submitTransaction(identityLabel, functionName, chaincodeArgs) {
     const gateway = new Gateway();
     // ==== Do we neeed wallet ? if so 
     const wallet = await Wallets.newFileSystemWallet('./wallet');
@@ -44,10 +44,11 @@ async function main(identityLabel, functionName, chaincodeArgs ) {
         if (`${response}` !== '') {
             console.log(`Response from ${functionName}: ${response}`);
         }
+        return response
 
     } catch (error) {
         console.log(`Error processing transaction. ${error}`);
-        console.log(error.stack);
+        return error
     } finally {
         console.log('Disconnect from the gateway.');
         gateway.disconnect();
@@ -56,4 +57,4 @@ async function main(identityLabel, functionName, chaincodeArgs ) {
 
 //main();
 
-module.exports = { main }
+module.exports = { submitTransaction }
