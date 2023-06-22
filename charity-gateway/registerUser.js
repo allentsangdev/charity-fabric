@@ -8,7 +8,7 @@ const { Wallets, Gateway } = require('fabric-network');
 
 const testNetworkRoot = path.resolve(require('os').homedir(), 'fabric-samples/test-network');
 
-async function main(registrarLabel,) {
+async function registerUser(registrarLabel, enrollmentID, optional) {
     try {
         // Create a new FileSystemWallet object for managing identities.
         const wallet = await Wallets.newFileSystemWallet('./wallet');
@@ -16,9 +16,7 @@ async function main(registrarLabel,) {
         // Check to see if we've already enrolled the registrar user.
         let registrarIdentity = await wallet.get(registrarLabel);
         if (!registrarIdentity) {
-            console.log(`An identity for the registrar user ${registrarLabel} does not exist in the wallet`);
-            console.log('Run the enrollUser.js application before retrying');
-            return;
+            throw new Error(`An identity for the registrar user ${registrarLabel} does not exist in the wallet, Run the enrollUser.js application before retrying`);
         }
 
         const orgName = registrarLabel.split('@')[1];
@@ -38,27 +36,24 @@ async function main(registrarLabel,) {
         const provider = wallet.getProviderRegistry().getProvider(registrarIdentity.type);
 		const registrarUser = await provider.getUserContext(registrarIdentity, registrarLabel);
 
-        const enrollmentID = args[1];
-
-        /* optional parameters
-        let optional = {};
-        if (args.length > 2) {
-            optional = JSON.parse(args[2]);
+        // optional parameters
+        let optionalSecret = {};
+        if (optional) {
+            optionalSecret = JSON.parse(optional);
         }
-        */
-
+        
         // Register the user and return the enrollment secret.
         let registerRequest = {
             enrollmentID: enrollmentID,
-            enrollmentSecret: optional.secret || "",
+            enrollmentSecret: optionalSecret.secret || "",
             role: 'client',
-            attrs: optional.attrs || []
+            attrs: optionalSecret.attrs || []
         };
         const secret = await ca.register(registerRequest, registrarUser);
         console.log(`Successfully registered the user with the ${enrollmentID} enrollment ID and ${secret} enrollment secret.`);
+        return secret
     } catch (error) {
-        console.error(`Failed to register user: ${error}`);
-        process.exit(1);
+        return error.message
     }
 }
 
@@ -73,4 +68,4 @@ main().then(() => {
 });
 */
 
-module.exports = { main }
+module.exports = { registerUser }

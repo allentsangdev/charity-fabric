@@ -1,4 +1,5 @@
 const { main } = require('/home/azureuser/fabric-samples/charity-fabric/charity-gateway/enrollUser.js')
+const { registerUser } = require('/home/azureuser/fabric-samples/charity-fabric/charity-gateway/registerUser.js')
 const express = require('express')
 const cors = require('cors')
 const app = express()
@@ -23,6 +24,18 @@ router.post('/enroll-user', async (req,res) => {
         const result = await main(identityLabel, enrollmentID, enrollmentSecret)
         res.status(200).json(result)
 
+    } 
+    catch(error) {
+        res.status(500).send(error.message)
+    }
+})
+
+// POST Request: register-user
+router.post('/register-user', async (req,res) => {
+    try {
+        const {identityLabel, enrollmentID, optional } = req.body
+        const result = await registerUser(identityLabel, enrollmentID, optional)
+        res.status(200).json(result)
     } 
     catch(error) {
         res.status(500).send(error.message)
