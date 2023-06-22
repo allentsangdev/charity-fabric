@@ -11,6 +11,7 @@ const testNetworkRoot = path.resolve(require('os').homedir(), 'fabric-samples/te
 async function main(identityLabel, enrollmentID, enrollmentSecret ) {
     try {
         
+        // Processing the function arguments
         const orgName = identityLabel.split('@')[1];
         const orgNameWithoutDomain = orgName.split('.')[0];
 
@@ -31,15 +32,15 @@ async function main(identityLabel, enrollmentID, enrollmentSecret ) {
         // Check to see if we've already enrolled the user.
         let identity = await wallet.get(identityLabel);
         if (identity) {
-            console.log(`An identity for the ${identityLabel} user already exists in the wallet`);
-            return;
+            throw new Error(`An identity for the ${identityLabel} user already exists in the wallet`);
         }
 
-        // optional
+        /* optional
         let enrollmentAttributes = [];
         if (args.length > 3) {
             enrollmentAttributes = JSON.parse(args[3]);
         }
+        */
 
         let enrollmentRequest = {
             enrollmentID: enrollmentID,
@@ -58,12 +59,14 @@ async function main(identityLabel, enrollmentID, enrollmentSecret ) {
             type: 'X.509',
         };
 
-        await wallet.put(identityLabel, identity);
-        console.log(`Successfully enrolled ${identityLabel} user and imported it into the wallet`);
+        const res = await wallet.put(identityLabel, identity);
+        //const res = `Successfully enrolled ${identityLabel} user and imported it into the wallet`;
+        return res
 
     } catch (error) {
-        console.error(`Failed to enroll user: ${error}`);
-        process.exit(1);
+        //console.error(`Failed to enroll user: ${error}`);
+        //process.exit(1);
+        return error.message
     }
 }
 
