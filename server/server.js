@@ -75,7 +75,10 @@ router.post('/get-all-campaign', async (req,res) => {
     try {
         const {identityLabel, chaincodeArgs } = req.body
         const result = await submitTransaction(identityLabel, functionName = 'GetAllCampaign', chaincodeArgs)
-        res.status(200).json(result)
+        const decodedResult = result.toString('utf8'); // Decode the result from Buffer to string
+        const parsedResult = JSON.parse(decodedResult); // Parse the decoded result as JSON
+
+        res.status(200).json(parsedResult);
 
     } 
     catch(error) {
