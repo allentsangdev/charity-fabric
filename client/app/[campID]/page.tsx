@@ -58,7 +58,7 @@ const page = () => {
           <Link href="/list">
             <Button variant="ghost">Back</Button>
           </Link>
-          <AlertModal>
+          <AlertModal isDonator={true}>
             <Button>Donate</Button>
           </AlertModal>
         </CardFooter>

@@ -19,7 +19,7 @@ import { Separator } from "@/components/ui/separator"
 import { AlertModal } from "@/components/donator/Modal"
 
 const page = () => {
-  const [amount, setAmount] = React.useState<number>()
+  const [amount, setAmount] = React.useState<number>(10000)
 
   console.log(amount)
 
@@ -50,13 +50,11 @@ const page = () => {
                 <Label htmlFor="name">Amount</Label>
                 <NumericFormat
                   customInput={Input}
+                  displayType="text"
                   value={amount}
                   thousandSeparator
                   allowNegative={false}
                   prefix="$"
-                  onChange={(e: {
-                    target: { value: React.SetStateAction<number | undefined> }
-                  }) => setAmount(e.target.value)}
                 />
               </div>
             </div>

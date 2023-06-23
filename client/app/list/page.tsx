@@ -1,8 +1,10 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useLayoutEffect, useState } from "react"
 import Link from "next/link"
+import axios from "axios"
 import { atom, useAtom } from "jotai"
+import { useQuery } from "react-query"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -14,6 +16,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import Loading from "@/components/Loading"
 
 const campaigns = [
   {
@@ -62,47 +65,69 @@ const campaigns = [
     dueDate: "12th Aug 2024",
   },
 ]
-export const list = atom({})
+// export const list = atom({})
 
 const TableDemo = () => {
-  const [campaign, setCampaign] = useAtom(list)
+  // const [campaign, setCampaign] = useAtom(list)
+  // const [isLoading, setIsLoading] = useState(true)
+
+  const getData = async () => {
+    const response = await axios.post(
+      `http://20.63.75.49:4000/get-all-campaign`,
+      {
+        identityLabel: 'User1@org1.example.com"',
+      }
+    )
+    return response.data
+  }
+
+  const { data, isLoading } = useQuery("campaigns", getData)
+
+  console.log(data)
 
   return (
-    <div className="border p-4 rounded-lg">
-      <Table>
-        {/* <TableCaption>A list of active recent campaigns</TableCaption> */}
-        <TableHeader>
-          <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead>Description</TableHead>
-            <TableHead>Goals</TableHead>
-            <TableHead>Found raised</TableHead>
-            <TableHead>Due Date</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {campaigns.map((item, index) => (
-            <TableRow key={item.name}>
-              <TableCell className="font-medium">{item.name}</TableCell>
-              <TableCell className="max-w-xs truncate">
-                {item.description}
-              </TableCell>
-              <TableCell className="max-w-xs truncate">{item.goals}</TableCell>
-              <TableCell>{item.amountRaised}</TableCell>
-              <TableCell>{item.dueDate}</TableCell>
-              <TableCell>
-                <Link
-                  href="/campain"
-                  onClick={() => setCampaign(campaigns[index])}
-                >
-                  <Button>Donate</Button>
-                </Link>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
+    <>
+      <div className="border p-4 rounded-lg">
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Name</TableHead>
+                <TableHead>Description</TableHead>
+                <TableHead>Goals</TableHead>
+                <TableHead>Found raised</TableHead>
+                <TableHead>Due Date</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {campaigns.map((item, index) => (
+                <TableRow key={item.name}>
+                  <TableCell className="font-medium">{item.name}</TableCell>
+                  <TableCell className="max-w-xs truncate">
+                    {item.description}
+                  </TableCell>
+                  <TableCell className="max-w-xs truncate">
+                    {item.goals}
+                  </TableCell>
+                  <TableCell>{item.amountRaised}</TableCell>
+                  <TableCell>{item.dueDate}</TableCell>
+                  <TableCell>
+                    <Link
+                      href="/campain"
+                      // onClick={() => setCampaign(campaigns[index])}
+                    >
+                      <Button>Donate</Button>
+                    </Link>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        )}
+      </div>
+    </>
   )
 }
 
