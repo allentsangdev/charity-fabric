@@ -38,7 +38,7 @@ class CharityContract extends Contract {
             CampaignName: campaignName,
             CampaignDesc: campaignDesc,
             FundReceiver: fundReceiver,
-            ExpireOn: expireOn,
+            ExpireOn: new Date(expireOn),
             TargetAmt: targetAmt,
             CurrentRaisedAmt: currentRaisedAmt,
             DonateHistory : donateHistory

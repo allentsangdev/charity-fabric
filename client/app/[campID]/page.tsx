@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
+import listState from "@/store/ListState"
 import { NumericFormat } from "react-number-format"
 
 import { Button } from "@/components/ui/button"
@@ -19,25 +20,29 @@ import { Separator } from "@/components/ui/separator"
 import { AlertModal } from "@/components/donator/Modal"
 
 const page = () => {
+  const campaign = listState((state) => state.campaign)
+
+  console.log(campaign)
+
   return (
     <div className="w-full flex justify-center items-center">
       <Card className="">
         <CardHeader>
-          <CardTitle className="w-full flex justify-center text-2xl">
-            The Red Cross
+          <CardTitle className="w-96 h-12 flex justify-center text-2xl">
+            {campaign?.CampaignName}
           </CardTitle>
           <CardDescription />
           <CardDescription />
           <CardDescription />
           <CardDescription className="text-base">
-            International humanitarian aid
+            {campaign?.CampaignDesc}
           </CardDescription>
           <CardDescription />
           <Separator orientation="horizontal" />
-          <CardDescription />
-          <CardDescription>
-            Offer medical care, clean water and sanitation, relief supplies
+          <CardDescription className="text-base">
+            {campaign?.FundReceiver}
           </CardDescription>
+          <CardDescription />
         </CardHeader>
         <CardContent>
           <form>

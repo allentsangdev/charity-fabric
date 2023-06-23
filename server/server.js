@@ -79,7 +79,7 @@ router.post("/register-user", async (req, res) => {
 // Returns back the created Campaign Object
 // Expected Params:
 // identityLabel: identity in String eg. -> "User1@org1.example.com",
-// chaincodeArgs: A list of args in strings eg. -> ["C1", "Japan Earthquake", "To help rebuild Japan!", "People in Japan", "250324", "99999"] -> campaignId, campaignName, campaignDesc, fundReceiver, expireOn, targetAmt
+// chaincodeArgs: A list of args in strings eg. -> ["C1", "Japan Earthquake", "To help rebuild Japan!", "People in Japan", "2024-12-31", "99999"] -> campaignId, campaignName, campaignDesc, fundReceiver, expireOn, targetAmt
 router.post("/create-campaign", async (req, res) => {
     try {
         const { identityLabel, chaincodeArgs } = req.body;

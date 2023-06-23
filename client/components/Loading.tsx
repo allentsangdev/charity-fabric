@@ -30,8 +30,8 @@ const Loading = () => {
   }, [])
 
   return (
-    <div>
-      <Progress value={progress} />
+    <div className="w-full flex justify-center items-center">
+      <Progress value={progress} className="w-1/2" />
     </div>
   )
 }
