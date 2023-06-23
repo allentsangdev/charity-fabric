@@ -1,4 +1,5 @@
 import Link from "next/link"
+import listState from "@/store/listState"
 
 import {
   AlertDialog,
@@ -13,7 +14,12 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
 
-export function AlertModal({ children, isDonator }: any) {
+export function AlertModal({
+  children,
+  isDonator,
+  handleDonate,
+  handleWithdraw,
+}: any) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
@@ -26,9 +32,15 @@ export function AlertModal({ children, isDonator }: any) {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <Link href={isDonator ? "/list" : ""}>
-            <AlertDialogAction>Continue</AlertDialogAction>
-          </Link>
+          {isDonator ? (
+            <AlertDialogAction onClick={handleDonate}>
+              Continue
+            </AlertDialogAction>
+          ) : (
+            <AlertDialogAction onClick={handleWithdraw}>
+              Continue
+            </AlertDialogAction>
+          )}
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

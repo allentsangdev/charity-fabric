@@ -1,11 +1,13 @@
 "use client"
 
 import * as React from "react"
+import { GetStaticPaths, GetStaticProps } from "next"
 import Link from "next/link"
-import thousandSeparator from "@/func/thousandSep"
+import { useRouter } from "next/navigation"
+import listState from "@/store/listState"
 import axios from "axios"
 import { NumericFormat } from "react-number-format"
-import { useQuery } from "react-query"
+import { QueryClient, useQuery } from "react-query"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -22,24 +24,33 @@ import { Separator } from "@/components/ui/separator"
 import Loading from "@/components/Loading"
 import { AlertModal } from "@/components/donator/Modal"
 
-const page = () => {
-  const [isWithdraw, setIsWithdraw] = React.useState(false)
+const page = ({ params }: any) => {
   const [doLoading, setDoLoading] = React.useState(false)
+  const router = useRouter()
+  const [amount, setAmount] = React.useState("")
   const getData = async () => {
     const response = await axios.post("http://20.63.75.49:4000/get-campaign", {
       identityLabel: "User1@org1.example.com",
-      chaincodeArgs: [`C1`],
+      chaincodeArgs: [`${params?.campID}`],
     })
     return response.data
   }
 
-  const { data, isLoading } = useQuery(`campaignC1`, getData)
+  const { data, isLoading } = useQuery(`campaign${params?.campID}`, getData)
 
-  const handleWithdraw = () => {
-    setIsWithdraw(true)
+  const handleDonate = async () => {
     setDoLoading(true)
+    const res = await axios.post("http://20.63.75.49:4000/donate", {
+      identityLabel: "User1@org1.example.com",
+      chaincodeArgs: ["A1", `${params?.campID}`, amount],
+    })
 
-    setTimeout(() => setDoLoading(false), 2000)
+    if (res.status === 200) {
+      setTimeout(() => {
+        setDoLoading(false)
+      }, 3000)
+      router.push("/list")
+    }
   }
 
   return (
@@ -56,32 +67,38 @@ const page = () => {
               <CardDescription />
               <CardDescription />
               <CardDescription />
-              <CardDescription className="text-base">
+              <CardDescription className="text-lg font-semibold">
                 {data?.FundReceiver}
               </CardDescription>
               <CardDescription />
               <Separator orientation="horizontal" />
+              <CardDescription className="text-base">
+                {data?.CampaignDesc}
+              </CardDescription>
               <CardDescription />
-              <CardDescription>{data?.CampaignDesc}</CardDescription>
             </CardHeader>
             <CardContent>
               <form>
                 <div className="grid w-full items-center gap-4">
                   <div className="flex flex-col space-y-4">
                     <Label htmlFor="name">Amount</Label>
-                    {isWithdraw
-                      ? "$0"
-                      : `$${thousandSeparator(data?.CurrentRaisedAmt)}`}
+                    <NumericFormat
+                      customInput={Input}
+                      thousandSeparator
+                      allowNegative={false}
+                      prefix="$"
+                      onValueChange={(e) => setAmount(e.value)}
+                    />
                   </div>
                 </div>
               </form>
             </CardContent>
             <CardFooter className="flex justify-between">
-              <Link href="/">
-                <Button variant="ghost">Log out</Button>
+              <Link href="/list">
+                <Button variant="ghost">Back</Button>
               </Link>
-              <AlertModal isDonator={false} {...{ handleWithdraw }}>
-                <Button>Withdraw</Button>
+              <AlertModal isDonator={true} {...{ handleDonate }}>
+                <Button>Donate</Button>
               </AlertModal>
             </CardFooter>
           </Card>

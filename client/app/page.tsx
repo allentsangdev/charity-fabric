@@ -1,15 +1,10 @@
 import { Metadata } from "next"
 import Image from "next/image"
-import Link from "next/link"
-import { Command } from "lucide-react"
 
-import { cn } from "@/lib/utils"
-import { buttonVariants } from "@/components/ui/button"
 import { UserAuthForm } from "@/components/auth/user-auth-form"
 
 export const metadata: Metadata = {
-  title: "Authentication",
-  description: "Authentication forms built using the components.",
+  title: "Charity Inc",
 }
 
 export default function AuthenticationPage() {
@@ -63,7 +58,7 @@ export default function AuthenticationPage() {
           <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
             <div className="flex flex-col space-y-2 text-center">
               <h1 className="text-xl font-semibold tracking-tight">
-                Are you a Donator or Campainer?
+                Are you a Donator or Campaigner?
               </h1>
               <p className="text-sm text-muted-foreground">
                 Tell us what you want to be!

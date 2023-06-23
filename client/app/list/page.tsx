@@ -4,10 +4,9 @@ import { useEffect, useLayoutEffect, useState } from "react"
 import Link from "next/link"
 import thousandSeparator from "@/func/thousandSep"
 import timeConvert from "@/func/timeConvert"
-import listState from "@/store/ListState"
+import listState from "@/store/listState"
 import axios from "axios"
-import { atom, useAtom } from "jotai"
-import { useQuery } from "react-query"
+import { QueryClient, useQuery } from "react-query"
 
 import { Campaign } from "@/types/campaign"
 import { Button } from "@/components/ui/button"
@@ -23,8 +22,6 @@ import {
 import Loading from "@/components/Loading"
 
 const TableDemo = () => {
-  const setCampaign = listState((state) => state.setCampaign)
-
   const getData = async () => {
     const response = await axios.post(
       `http://20.63.75.49:4000/get-all-campaign`,
@@ -35,9 +32,7 @@ const TableDemo = () => {
     return response.data
   }
 
-  const { data, isLoading } = useQuery("campaigns", getData)
-
-  console.log(data)
+  const { data, isLoading } = useQuery("list", getData)
 
   return (
     <>
@@ -56,7 +51,7 @@ const TableDemo = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data.map((item: Campaign, index: number) => (
+              {data?.map((item: Campaign, index: number) => (
                 <TableRow key={item?.ID}>
                   <TableCell className="font-medium">
                     {item?.CampaignName}
@@ -74,10 +69,7 @@ const TableDemo = () => {
                     {timeConvert(item?.ExpireOn.toString())}
                   </TableCell>
                   <TableCell>
-                    <Link
-                      href="/campain"
-                      onClick={() => setCampaign(data[index])}
-                    >
+                    <Link href={`/campaign/${item?.ID}`}>
                       <Button>View</Button>
                     </Link>
                   </TableCell>
