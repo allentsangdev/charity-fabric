@@ -1,4 +1,5 @@
 const { main } = require("../charity-gateway/enrollUser");
+const { loginUser } = require("../charity-gateway/loginUser");
 const { registerUser } = require("../charity-gateway/registerUser");
 const { submitTransaction } = require("../charity-gateway/submitTransaction");
 const express = require("express");
@@ -28,6 +29,20 @@ router.post("/enroll-user", async (req, res) => {
     try {
         const { identityLabel, enrollmentID, enrollmentSecret } = req.body;
         const result = await main(
+            identityLabel,
+            enrollmentID,
+            enrollmentSecret
+        );
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+});
+
+router.post("/loginUser", async (req, res) => {
+    try {
+        const { identityLabel, enrollmentID, enrollmentSecret } = req.body;
+        const result = await loginUser(
             identityLabel,
             enrollmentID,
             enrollmentSecret
