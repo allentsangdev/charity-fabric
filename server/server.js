@@ -39,6 +39,14 @@ router.post("/enroll-user", async (req, res) => {
     }
 });
 
+// POST Request: loginUser
+// Currently return status 200 and true for successful request. To improve logic from the gateway layer when hv time
+// Expected Params:
+// identityLabel: identity in String eg. -> "User1@org1.example.com"
+// enrollmentID: string eg. "admin"
+// enrollmentSecret: string eg "adminpw"
+
+
 router.post("/loginUser", async (req, res) => {
     try {
         const { identityLabel, enrollmentID, enrollmentSecret } = req.body;
