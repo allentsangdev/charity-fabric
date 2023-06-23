@@ -58,6 +58,7 @@ router.post('/create-campaign', async (req,res) => {
 })
 
 // POST Request: Create Donator Account
+// Currently only return status 200 and a Buffer back. To improve logic from the chaincode layer when hv time
 router.post('/create-donator-account', async (req,res) => {
     try {
         const {identityLabel, chaincodeArgs } = req.body
@@ -71,10 +72,11 @@ router.post('/create-donator-account', async (req,res) => {
 })
 
 // GET Request: Get All Campaign
+// Returns back a list of Campaign object
 router.post('/get-all-campaign', async (req,res) => {
     try {
-        const {identityLabel, chaincodeArgs } = req.body
-        const result = await submitTransaction(identityLabel, functionName = 'GetAllCampaign', chaincodeArgs)
+        const {identityLabel} = req.body
+        const result = await submitTransaction(identityLabel, functionName = 'GetAllCampaign', chaincodeArgs = [])
         const decodedResult = result.toString('utf8'); // Decode the result from Buffer to string
         const parsedResult = JSON.parse(decodedResult); // Parse the decoded result as JSON
 

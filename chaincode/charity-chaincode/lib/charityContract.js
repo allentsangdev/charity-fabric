@@ -107,8 +107,8 @@ class CharityContract extends Contract {
             const targetCampaign = await this.GetCampaign(ctx, campaignId)
 
             // Donate funds: update the DonatorAccount and CampaignObject locally
-            donatorAccount.balance -= donateAmt
-            targetCampaign.CurrentRaisedAmt += donateAmt
+            donatorAccount.balance -= amountToDonate
+            targetCampaign.CurrentRaisedAmt += amountToDonate
             // Donate funds: update the DonatorAccount and CampaignObject in the world state
             await this._putAccount(ctx, donatorAccount) 
             await this._updateCampaign(ctx, targetCampaign) 
