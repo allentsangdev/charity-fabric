@@ -19,6 +19,11 @@ router.get("/", (req,res) => {
 })
 
 // POST Request: enroll-user
+// Currently only return status 200 for successful request. To improve logic from the gateway layer when hv time
+// Expected Params:
+// identityLabel: identity in String eg. -> "User1@org1.example.com"
+// enrollmentID: string eg. "admin"
+// enrollmentSecret: string eg "adminpw"
 router.post('/enroll-user', async (req,res) => {
     try {
         const {identityLabel, enrollmentID, enrollmentSecret } = req.body
@@ -32,6 +37,12 @@ router.post('/enroll-user', async (req,res) => {
 })
 
 // POST Request: register-user
+// Currently return status 200 and enrollmentSecret back for successful request. To improve logic from the gateway layer when hv time
+// Expected Params:
+// identityLabel: identity in String eg. -> "User1@org1.example.com"
+// enrollmentID: string eg. "User1@org1.example.com"
+// optional: an object eg. {"secret": "userpw"}
+// Can improve the optional params from the gateway layer when hv time
 router.post('/register-user', async (req,res) => {
     try {
         const {identityLabel, enrollmentID, optional } = req.body
@@ -45,11 +56,17 @@ router.post('/register-user', async (req,res) => {
 
 // ------------------------ Endpoints that talk to chaincode  ------------------------ //
 // POST Request: Create Campaign
+// Returns back the created Campaign Object
+// Expected Params:
+// identityLabel: identity in String eg. -> "User1@org1.example.com",
+// chaincodeArgs: A list of args in strings eg. -> ["C1", "Japan Earthquake", "To help rebuild Japan!", "People in Japan", "250324", "99999"] -> campaignId, campaignName, campaignDesc, fundReceiver, expireOn, targetAmt
 router.post('/create-campaign', async (req,res) => {
     try {
         const {identityLabel, chaincodeArgs } = req.body
         const result = await submitTransaction(identityLabel, functionName = 'CreateCampaign', chaincodeArgs)
-        res.status(200).json(result)
+        const decodedResult = result.toString('utf8'); // Decode the result from Buffer to string
+        const parsedResult = JSON.parse(decodedResult); // Parse the decoded result as JSON
+        res.status(200).json(parsedResult);
 
     } 
     catch(error) {
@@ -59,6 +76,9 @@ router.post('/create-campaign', async (req,res) => {
 
 // POST Request: Create Donator Account
 // Currently only return status 200 and a Buffer back. To improve logic from the chaincode layer when hv time
+// Expected Params:
+// identityLabel: identity in String eg. -> "User1@org1.example.com"
+// chaincodeArgs: A list of args in strings eg. -> ["A1"] -> donatorAccountid
 router.post('/create-donator-account', async (req,res) => {
     try {
         const {identityLabel, chaincodeArgs } = req.body
@@ -72,7 +92,9 @@ router.post('/create-donator-account', async (req,res) => {
 })
 
 // GET Request: Get All Campaign
-// Returns back a list of Campaign object
+// Returns back a list of Campaign objects
+// Expected Params:
+// identityLabel: identity in String eg. -> "User1@org1.example.com"
 router.post('/get-all-campaign', async (req,res) => {
     try {
         const {identityLabel} = req.body
@@ -89,6 +111,10 @@ router.post('/get-all-campaign', async (req,res) => {
 })
 
 // POST Request: Donate
+// Currently only return status 200 and a Buffer back. To improve logic from the chaincode layer when hv time
+// Expected Params:
+// identityLabel: identity in String eg. -> "User1@org1.example.com",
+// chaincodeArgs: A list of args in strings eg. -> ["A1", "C0", "30"] -> donatorAccountId, campaignId, donateAmt
 router.post('/donate', async (req,res) => {
     try {
         const {identityLabel, chaincodeArgs } = req.body
